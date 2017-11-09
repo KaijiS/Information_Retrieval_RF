@@ -35,12 +35,17 @@
           {% endif %}
         </div>
       {% endfor %}
-
-      <input type="hidden" name="query" value={{query}}>
+      {% for i in query_list %}
+        <input type="hidden" name="query" value={{i}}>
+      {% endfor %}
       {% for i in query_vec %}
         <input type="hidden" name="query_vec" value={{i}}>
       {% endfor %}
-      <input type="submit" class="btn btn-primary" value="リランキング">
+      {% if first_query == 0 and result_num != '0'%}
+        <br>
+        <input type="submit" class="btn btn-success" value="適合フィードバックによるリランキング">
+        <br><br>
+      {% endif %}
       </form>
 
     </div>

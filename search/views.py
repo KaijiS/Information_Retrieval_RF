@@ -50,7 +50,7 @@ def make_term(documents):
 def tf(terms, document):
     """任意の文書のTF値の計算"""
     tf_values = [document.count(term) for term in terms]
-    return list(map(lambda x: x/sum(tf_values), tf_values))
+    return list(map(lambda x: math.log10(x+1)/math.log10(sum(tf_values)), tf_values))
 
 
 def idf(terms, documents):
@@ -89,11 +89,15 @@ def Index(request):
     """検索結果"""
     query_flag = 0
     query_vec = None
+    first_query = 1
+    query_list = None
 
     if request.method == 'GET' :
         query = request.GET.get('query') #検索ワード：query
 
+        #キーワードが入力された時
         if query:
+            query_list = query.split(" ") # スペースを区切りにリスト化
             query_tmp = stemming(removeStoplist(prepro(query)))
 
             # クエリのベクトル生成
@@ -102,22 +106,27 @@ def Index(request):
                 if i in all_terms:
                     query_vec[all_terms.index(i)] = 1
 
+            #フラグ処理
             query_flag = 1
+            first_query = 0
 
 
+    # リランキングをしたとき
     if request.method == 'POST':
 
+        #ここからしばらく都合よく処理
         beta_list = request.POST.getlist('beta')
-        for i in range(len(beta_list )):
+        for i in range(len(beta_list)):
             beta_list[i] = int(beta_list[i])
 
-        query = request.POST.get('query')
-
+        query_list = request.POST.getlist('query')
+        query = ' '.join(query_list)
         query_vec = request.POST.getlist('query_vec')
         for i in range(len(query_vec)):
             query_vec[i] = float(query_vec[i])
         query_vec = np.array(query_vec)
 
+        #適合フィードバックの計算開始
         beta_count = 0
         sum_beta_vec = np.zeros(len(all_terms))
         gamma_count = 0
@@ -133,8 +142,12 @@ def Index(request):
         alpha = 8
         beta =  16
         gamma = 4
-        query_vec = alpha * np.array(query_vec) + beta * sum_beta_vec / beta_count - gamma * sum_gamma_vec / gamma_count
+        query_vec = alpha * query_vec + beta * sum_beta_vec / beta_count - gamma * sum_gamma_vec / gamma_count #Rocchioの式
+
+        #フラグ処理
         query_flag = 1
+        first_query = 0
+
 
     result_title = []
     result_abst = []
@@ -153,7 +166,7 @@ def Index(request):
         # 検索ワードとの類似度が高い順にソート(ランキング化)し、その元のindexをリスト化
         dec_doc=[]
         for i in range(len(sim_array)):
-            # print(np.sort(sim_array)[::-1][i])
+            # print(np.sort(sim_array)[::-1][i])  # 類似度を出力
             if np.sort(sim_array)[::-1][i] > 0:
                 dec_doc += [np.argsort(sim_array)[::-1][i]]
 
@@ -166,10 +179,12 @@ def Index(request):
                      len_abst += [len(j.abst)]
                      p_id += [str(j.id)]
 
+        #フラグ処理
         search_flag = '1'
 
     d = {
         'query':query,
+        'query_list':query_list,
         'query_vec':query_vec,
         'search_flag':search_flag,
         'result_title':result_title,
@@ -177,11 +192,13 @@ def Index(request):
         'len_abst':len_abst,
         'p_id':p_id,
         'result_num':str(len(result_abst)),
+        'first_query':first_query,
     }
     return render(request, 'search/index.html',d)
 
 
 def Content(request,paper_id):
+    """コンテンツ表示"""
 
     cont = get_object_or_404(Paper, pk=paper_id)
     contexts = {
