@@ -32,6 +32,15 @@ OS: macOS Sierra バージョン 10.12.6
 pip(or pip3) install django
 pip(or pip3) install nltk
 pip(or pip3) install numpy
+pip(or pip3) install django-bootstrap-form
+```
+**ライブラリの設定**
+ターミナルなどのコマンドラインにて"Python3"と入力し対話モードへ
+以下の内容を打ち込む
+```python:setup
+import nltk
+nltk.downloads('stopwords')
+exit()
 ```
 
 **開発用サーバの起動**  
