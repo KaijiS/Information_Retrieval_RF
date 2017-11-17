@@ -63,7 +63,7 @@ Information_Retrieval_RF(プロジェクト名)
 テーブル名:Paper(属性:ID,論文タイトル,論文アブストラクト)  
 
 **機能**
-* 論文検索
+* 英語論文及び英語技術記事検索(日本語ではないのでMeCabなどによる形態素解析は行わない)
 * 検索結果より論文の内容(アブストラクト)の表示
 * 適合フィードバックによる検索結果更新  
 
@@ -98,3 +98,27 @@ Information_Retrieval_RF(プロジェクト名)
 
 　
 ![top](./explain_image/5-1.png)  
+　
+　
+
+#### 使用させて頂いた論文及び記事
+1. A.Costa et al, Efficient Parameter Estimation for Information Retrieval using Black-box Optimization, 2017
+2. I.Zeroual et al, Arabic information retrieval: Stemming or lemmatization?, 2017
+3. A.Goker et al, Performance Issues in Parallel Computing for Information Retrieval, 2009
+4. A.Goker et al, Context and Information Retrieval, 2009
+5. A.Goker et al, The Role of Natural Language Processing in Information Retrieval: Searching for Meaning and Structure, 2009
+6. A.Khan et al, Vision Based Information Retrieval, 2017
+7. A.Goker et al, Information Retrieval Models, 2009
+8. A.Goker et al, Web Information Retrieval, 2009
+9. A.Goker et al, User‐Centred Evaluation of Information Retrieval Systems, 2009
+10. A.Goker et al, Cross‐Language Information Retrieval, 2009
+11. H.Cho et al, Information Needs for Anime Recommendation: Analyzing Anime Users' Online Forum Queries, 2017
+12. Q.Zhao et al, A Novel Method on Information Recommendation via Hybrid Similarity, 2016
+13. C.Li et al, The design of employment information recommendation system, 2016
+14. B.He et al, Library personalized information recommendation of big data, 2016
+15. H.Haiyan et al, Design and Implementation of Agricultural Production and Market Information Recommendation System Based on Cloud Computing, 2016
+16. Haiyan Hu et al, A Study on Key Techniques of Wisdom Campus Information Recommendation Platform Based on Big Data, 2015
+17. X.Zhou et al, Social Stream Organization Based on User Role Analysis for Participatory Information Recommendation, 2014
+18. J.Oliveira et al, Collaborative information gathering and recommendation using mobile computing, 2013
+19. X.Han et al, A Big Data Model Supporting Information Recommendation in Social Networks, 2012
+20. K.Christidis et al, A socially intelligent approach for enterprise information search and recommendation, 2012
